@@ -4,6 +4,7 @@ module Api
 
       include ActionController::MimeResponds
       before_action :set_article, only: [:update, :destroy, :show]
+      before_action :is_valid_user, only: [:update, :destroy, :create ]
 
       # GET /blog/:blog_id/articles or GET /articles
       # GET /blog/:blog_id/articles.xml or GET /articles.xml
@@ -29,7 +30,7 @@ module Api
       # POST /blog/:blog_id/articles.xml
       def create
         @article = Article.new(article_params)
-
+        @article.user_id = @user.id
         respond_to do |format|
           if @article.save
             format.json { render json: @article }

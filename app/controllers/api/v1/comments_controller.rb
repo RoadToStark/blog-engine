@@ -4,6 +4,7 @@ module Api
 
       include ActionController::MimeResponds
       before_action :set_comment, only: [:update, :destroy, :show]
+      before_action :is_valid_user, only: [:update, :destroy, :create ]
 
       # GET /articles/:article_id/comments or GET /comments
       # GET /articles/:article_id/comments.xml or GET /comments.xml
@@ -29,7 +30,7 @@ module Api
       # POST /articles/:article_id/comments.xml
       def create
         @comment = Comment.new(comment_params)
-
+        @comment.user_id = @user.id
         respond_to do |format|
           if @comment.save
             format.json { render json: @comment }

@@ -4,6 +4,7 @@ module Api
 
       include ActionController::MimeResponds
       before_action :set_blog, only: [:update, :destroy, :show]
+      before_action :is_valid_user, only: [:update, :destroy, :create ]
 
       # GET /blogs
       # GET /blogs.xml
@@ -29,6 +30,7 @@ module Api
       # POST /blogs.xml
       def create
         @blog = Blog.new(blog_params)
+        @blog.users << @user
 
         respond_to do |format|
           if @blog.save

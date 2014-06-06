@@ -12,6 +12,15 @@ Rails.application.routes.draw do
 
       resources :comments, only: [:index, :show, :update, :destroy]
 
+      resources :users do
+        resources :blogs, only: [:index]
+        resources :articles, only: [:index]
+        resources :comments, only: [:index]
+      end
+
+      # Login routes
+      post "login" => "sessions#create", :as => "login"
+      get "logout" => "sessions#destroy", :as => "logout"
     end
   end
 end

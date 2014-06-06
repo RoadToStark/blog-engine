@@ -10,6 +10,8 @@ gem 'sqlite3'
 
 gem 'mysql2'
 
+gem 'bcrypt', :require => 'bcrypt'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
