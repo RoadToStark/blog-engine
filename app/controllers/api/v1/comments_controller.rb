@@ -4,7 +4,8 @@ module Api
 
       include ActionController::MimeResponds
       before_action :set_comment, only: [:update, :destroy, :show]
-      before_action :is_valid_user, only: [:update, :destroy, :create ]
+      before_action :is_valid_user, only: [:update, :destroy, :create]
+      before_action :is_comment_author, only: [:update, :destroy]
 
       # GET /articles/:article_id/comments or GET /comments
       # GET /articles/:article_id/comments.xml or GET /comments.xml
@@ -75,6 +76,18 @@ module Api
       # Never trust parameters from the scary internet, only allow the white list through.
       def comment_params
         params.permit(:title, :content, :article_id)
+      end
+
+      # Enable only comment author
+      def is_comment_author
+        if @user.id == @comment.user_id
+          true
+        else
+          respond_to do |format|
+            format.json { render json: {error: 'Not Authorized'}, status: 401 }
+            format.xml { render xml: {error: 'Not Authorized' }, status: 401 }
+          end
+        end
       end
     end
   end

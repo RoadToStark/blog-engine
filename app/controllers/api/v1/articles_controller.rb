@@ -4,7 +4,8 @@ module Api
 
       include ActionController::MimeResponds
       before_action :set_article, only: [:update, :destroy, :show]
-      before_action :is_valid_user, only: [:update, :destroy, :create ]
+      before_action :is_valid_user, only: [:update, :destroy, :create]
+      before_action :is_post_author, only: [:update, :destroy]
 
       # GET /blog/:blog_id/articles or GET /articles
       # GET /blog/:blog_id/articles.xml or GET /articles.xml
@@ -75,6 +76,18 @@ module Api
       # Never trust parameters from the scary internet, only allow the white list through.
       def article_params
         params.permit(:title, :content, :blog_id)
+      end
+
+      # Enable only post author
+      def is_post_author
+        if @user.id == @article.user_id
+          true
+        else
+          respond_to do |format|
+            format.json { render json: {error: 'Not Authorized'}, status: 401 }
+            format.xml { render xml: {error: 'Not Authorized' }, status: 401 }
+          end
+        end
       end
     end
   end
