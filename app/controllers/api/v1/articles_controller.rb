@@ -7,10 +7,16 @@ module Api
       before_action :is_valid_user, only: [:update, :destroy, :create]
       before_action :is_post_author, only: [:update, :destroy]
 
-      # GET /blog/:blog_id/articles or GET /articles
-      # GET /blog/:blog_id/articles.xml or GET /articles.xml
+      # GET /blog/:blog_id/articles or GET /users/:user_id/articles or GET /articles
+      # GET /blog/:blog_id/articles.xml or GET /users/:user_id/articles.xml or GET /articles.xml
       def index
-        params[:blog_id].present? ? @articles = Blog.find(params[:blog_id]).articles : @articles = Article.all
+        if params[:blog_id].present?
+          @articles = Blog.find(params[:blog_id]).articles
+        elsif params[:user_id].present?
+          @articles = User.find(params[:user_id]).articles
+        else
+          @articles = Article.all
+        end
 
         respond_to do |format|
           format.json { render json: @articles }

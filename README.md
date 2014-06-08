@@ -18,4 +18,10 @@ Just add .xml at end of URL to get XML result
   * User's comments :  **GET** *../api/v1/users/:user_id/comments*
   * Create comment :  **POST** *../api/v1/articles/:article_id/comments*
 
+* User login/logout
+    * Login : **POST** *../api/v1/login*
+        * Arguments : email + password
+        * Return a token used to identify the user
+    * Logout : **GET** *../api/v1/logout*
+
 
